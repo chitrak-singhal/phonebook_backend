@@ -41,7 +41,14 @@ let persons= [
         </div>
     `)
   })
-
+  app.get('/info/:id',(request,response)=>{
+    id = Number(request.params.id)
+    console.log(id)
+    const name = persons.find(name=>name.id===id)
+    if(!name)
+        response.status(404).end()
+    response.json(name)
+})
  
 
 const PORT = 3001
