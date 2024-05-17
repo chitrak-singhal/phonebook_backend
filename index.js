@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+app.use(express.json())
 
 let persons= [
     { 
@@ -49,7 +50,41 @@ let persons= [
         response.status(404).end()
     response.json(name)
 })
- 
+app.delete('/info/:id',(request,response)=>{
+    id = Number(request.params.id)
+    console.log(id)
+    persons = persons.filter(name=>name.id!==id)
+    response.json(persons)
+})
+app.delete('/info/:id',(request,response)=>{
+    id = Number(request.params.id)
+    console.log(id)
+    persons = persons.filter(name=>name.id!==id)
+    response.json(persons)
+})
+app.post('/api/persons', (request, response) => {
+    const name = request.body
+    name.id = Math.floor(Math.random()*100000)
+    if (!name.name)
+        return response.status(400).json({
+            error:'name missing'
+    })
+    if (!name.number)
+        return response.status(400).json({
+            error:'number missing'
+    })
+    let p = persons.filter(n=>n.name===name.name);
+    p = p.length
+    if (p!==0)
+        {console.log(p)
+        console.log('hi')
+        return response.status(400).json({
+            error:'name already exits'
+    })}
+    persons = persons.concat(name)
+    console.log(name)
+    response.json(name)
+  })
 
 const PORT = 3001
 app.listen(PORT, () => {
